@@ -15,7 +15,7 @@ struct node* addbefore(struct node*,int data,int item);
 struct node* addafter(struct node*,int data,int item);
 struct node* del(struct node*,int data);
 struct node* create_list(struct node*start);
-void reverse(struct node*);
+struct node* reverse(struct node*start);
 int main(){
 struct node* start = NULL;
 int choice,data,item,pos;
@@ -79,6 +79,14 @@ while(1){
             scanf("%d",&data);
             start = addatpos(start,data,pos);
             break;
+        case 10:
+           printf("Enter the item to be deleted: ");
+           scanf("%d",&data);
+           start = del(start,data);
+           break;
+        case 11:
+         start = reverse(start);
+         break;
         default:
          exit(1);
 
@@ -87,7 +95,44 @@ while(1){
 
 return 0;
 }
-
+struct node* reverse(struct node* start){
+  struct node *ptr,*next,*prev;
+  prev = NULL;
+  ptr= start;
+  while(ptr!=NULL){
+      next = ptr->link;
+      ptr->link = prev;
+      prev = ptr;
+      ptr = next;
+  }
+ start = prev;
+ return start;
+}
+struct node* del(struct node* start,int data){
+     struct node* tmp,*p;
+     if(start == NULL){
+         printf("Empty list!\n");
+         return start;
+     }
+     if(start->info == data){
+        tmp = start;
+        start= start->link;
+        free(tmp);
+        return start; 
+     }
+     p= start;
+     while( p-> link != NULL){
+         if(p->link->info == data){
+             tmp = p->link;
+             p->link = tmp->link;
+             free(tmp);
+             return start;
+         }
+        p= p->link;
+     }
+  printf("Element not found!\n");
+  return start;
+}
 struct node* addatpos(struct node* start,int data ,int pos){
   struct node *tmp, *p;
   int i;
