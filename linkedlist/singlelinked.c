@@ -10,8 +10,8 @@ void count(struct node* start);
 void search(struct node*, int data);
 struct node* addatbeg(struct node*,int data);
 struct node* addatend(struct node*,int data);
-struct node* addatpos(struct node*,int data);
-struct node* addbefore(struct node*,int data);
+struct node* addatpos(struct node*,int data , int item);
+struct node* addbefore(struct node*,int data,int item);
 struct node* addafter(struct node*,int data,int item);
 struct node* del(struct node*,int data);
 struct node* create_list(struct node*start);
@@ -65,6 +65,20 @@ while(1){
          scanf("%d",&item);
          start = addafter(start,data,item);
          break;
+        case 8:
+         printf("Enter item to be inserted: ");
+         scanf("%d",&data);
+         printf("Enter node before which to insert: ");
+         scanf("%d",&item);
+         start= addbefore(start,data,item);
+         break;
+        case 9:
+            printf("Enter postion : ");
+            scanf("%d", &pos);
+            printf("Enter element to be entered: ");
+            scanf("%d",&data);
+            start = addatpos(start,data,pos);
+            break;
         default:
          exit(1);
 
@@ -74,6 +88,43 @@ while(1){
 return 0;
 }
 
+struct node* addatpos(struct node* start,int data ,int pos){
+  struct node *tmp, *p;
+  int i;
+  tmp = (struct node*)malloc(sizeof(struct node));
+  tmp->info = data;
+  if(pos == 1){
+      tmp->link = start;
+      start = tmp;
+      return start;
+  }
+  p = start;
+  for(i=1 ; i<pos-1 && p!= NULL ;i++){
+      p = p->link;
+  }
+ if(p == NULL)
+  printf("Position exceeds total number of elements!\n");
+ else{
+     tmp -> link = p->link;
+     p-> link = tmp;
+ }
+return start;
+}
+struct node* addbefore(struct node* start,int data, int item){
+ struct node* tmp, *p;
+ tmp = (struct node*)malloc(sizeof(struct node));
+ p = start;
+ while(p->link != NULL){
+        if(p->link->info == item){
+            tmp->info =data;
+            tmp->link = p->link;
+            p->link = tmp;
+            return start;
+        }
+   p=p->link;
+ }
+return start;
+}
 struct node* addafter(struct node* start,int data,int item){
     struct node* p = start;
     struct node* temp = (struct node*)(malloc(sizeof(struct node)));
