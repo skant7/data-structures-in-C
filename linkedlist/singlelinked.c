@@ -12,7 +12,7 @@ struct node* addatbeg(struct node*,int data);
 struct node* addatend(struct node*,int data);
 struct node* addatpos(struct node*,int data);
 struct node* addbefore(struct node*,int data);
-struct node* addafter(struct node*,int data);
+struct node* addafter(struct node*,int data,int item);
 struct node* del(struct node*,int data);
 struct node* create_list(struct node*start);
 void reverse(struct node*);
@@ -26,7 +26,7 @@ while(1){
     printf("4.Search\n");
     printf("5.Add to empty / Add at beginning\n");
     printf("6.Add at end\n");
-    printf("7.Add at after node\n");
+    printf("7.Add after node\n");
     printf("8.Add before node\n");
     printf("9.Add at position\n");
     printf("10.Delete\n");
@@ -40,6 +40,31 @@ while(1){
         case 2:
          display(start);
          break;
+        case 3:
+         count(start);
+         break;
+        case 4:
+         printf("Enter element to be searched: ");
+         scanf("%d",&data);
+         search(start,data);
+         break;
+        case 5:
+         printf("Enter element to be inserted: ");
+         scanf("%d",&data);
+         start = addatbeg(start,data);
+         break;
+        case 6:
+         printf("Enter element to be inserted: ");
+         scanf("%d",&data);
+         start = addatend(start,data);
+         break;
+        case 7:
+         printf("Enter item to be inserted: ");
+         scanf("%d",&data);
+         printf("Enter node after which to insert: ");
+         scanf("%d",&item);
+         start = addafter(start,data,item);
+         break;
         default:
          exit(1);
 
@@ -49,6 +74,66 @@ while(1){
 return 0;
 }
 
+struct node* addafter(struct node* start,int data,int item){
+    struct node* p = start;
+    struct node* temp = (struct node*)(malloc(sizeof(struct node)));
+    temp->info = data;
+    while(p!=NULL){
+        if(p->info == item){
+            temp->link = p->link;
+            p->link = temp;
+            return start;
+        }
+     p = p->link;
+    }
+ return start;
+}
+void count(struct node* start){
+    if(start == NULL){
+        printf("List is empty.\n");
+        return;
+    }
+    struct node* p = start;
+    int count=0;
+    while(p!= NULL){
+      p = p->link;
+      count++;
+    }
+ printf("list consists of %d elements.\n",count);
+}
+
+void search(struct node* start,int data){
+    struct node* p = start;
+    int pos = 1;
+    while(p != NULL){
+        if(p->info==data){
+           printf("element found at %d position.\n",pos);
+           return;
+        }
+        p= p->link;
+        pos++;
+    }
+   printf("Element not found!\n"); 
+}
+struct node* addatbeg(struct node* start,int data){
+    struct node* temp  = (struct node *)(malloc(sizeof(struct node)));
+    temp->info = data;
+    temp->link = start;
+    start = temp;
+    return start;
+}
+
+struct node* addatend(struct node* start,int data){
+    struct node* temp = (struct node *)(malloc(sizeof(struct node)));
+    temp->info = data;
+    struct node* p = start;
+    while(p->link != NULL){
+        p = p->link;
+    }
+   p->link = temp;
+   temp->link = NULL;
+return start;   
+}
 struct node* create_list(struct node* start){
     int i,data,n;
     start = NULL;
@@ -56,11 +141,11 @@ struct node* create_list(struct node* start){
     scanf("%d",&n);
     if(n==0)
      return start;
-    printf("Enter element: ");
+    printf("Enter elements: ");
     scanf("%d",&data);
     start = addatbeg(start,data);
     for(int i=2; i<=n; i++){
-          printf("Enter element: ");
+          //printf("Enter element: ");
           scanf("%d",&data);
           start = addatend(start,data);
     }
@@ -75,7 +160,7 @@ void display(struct node* start){
     printf("List contents: \n");
     while(p!= NULL){
         printf("%d ",p->info);
-        p = p-> link;
+        p = p->link;
 
     }
    printf("\n\n");
