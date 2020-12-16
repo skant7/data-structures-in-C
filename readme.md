@@ -1,6 +1,6 @@
-#Data Structures
+# Data Structures
 
--Linked list
--Stack
--Queue
--Hashmaps
+- Linked list
+- Stack
+- Queue
+- Hashmaps
