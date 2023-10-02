@@ -32,6 +32,9 @@ void updateValue(int arr[], int *st, int n, int i, int new_val) {
     
     updateValueUtil(st, 0, n - 1, i, diff, 0);
 }
+int getMid(int s, int e) {
+    return s + (e - s) / 2;
+}
  
 int getSum(int *st, int n, int qs, int qe) {
     
